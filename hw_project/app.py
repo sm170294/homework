@@ -22,14 +22,14 @@ def save_order():
     address_receive = request.form['address_give']
     phone_receive = request.form['phone_give']
 
-    doc = {
+    orders = {
         'name': name_receive,
         'count': count_receive,
         'address': address_receive,
         'phone': phone_receive
     }
 
-    db.homework.insert_one(doc)
+    db.dbhomework.insert_one(orders)
 
     return jsonify({'result': 'success', 'msg': '주문이 완료되었습니다!'})
 
@@ -37,7 +37,7 @@ def save_order():
 # 주문 목록보기(Read) API
 @app.route('/order', methods=['GET'])
 def view_orders():
-    orders = list(db.homework.find({}, {'_id': 0}))
+    orders = list(db.dbhomework.find({}, {'_id': 0}))
     return jsonify({'result': 'success', 'orders': orders})
 
 

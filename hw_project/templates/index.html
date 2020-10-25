@@ -62,7 +62,7 @@
                 url: "/order",
                 data: {name_give : name, count_give: count, address_give: address, phone_give: phone},
                 success: function(response){
-                if (response["result"] == "success") {
+                if (response["orders"] == "success") {
                     alert(response["msg"]);
                     window.location.reload();
                 }
@@ -82,12 +82,13 @@
                 url: "/order",
                 data: {},
                 success: function (response){
-                    if (response["result"]== "success") {
+                    if (response["result"] == "success") {
                         let orders = response["orders"];
                         for (let i=0; i < orders.length; i++){
-                            makeCard(orders[i]["name"], orders[i]["count"], orders[i]["address"], orders[i]["phone"]);
+                            makeOrdersRow(orders[i]["name"], orders[i]["count"], orders[i]["address"], orders[i]["phone"]);
                         }
-                    }else {
+                    }
+                    else {
                         alert("주문을 완료하지 못했습니다");
                     }
                     }
@@ -96,8 +97,8 @@
 
             }
 
-            function makeOrderRow(name, count, address, phone) {
-                let tempHtml = `<tr>
+            function makeOrdersRow(name, count, address, phone) {
+                let tempHtml = `<tr>\
                                 <td>${name}</td>
                                 <td>${count}</td>
                                 <td>${address}</td>
