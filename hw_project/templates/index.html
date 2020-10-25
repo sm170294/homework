@@ -35,28 +35,41 @@
                 let phone = $("#order-phone").val();
 
                 if (name == "") {
-                    alert("이름을 입력해주세요")
-                    $("#order-name").focus()
-                    return
+                    alert("이름을 입력해주세요");
+                    $("#order-name").focus();
+                    return;
                 } else if (count == "") {
-                    alert("수량을 입력해주세요")
-                    $("#order-count").focus()
-                    return
+                    alert("수량을 입력해주세요");
+                    $("#order-count").focus();
+                    return;
                 } else if (address == "") {
-                    alert("주소를 입력해주세요")
-                    $("#order-address").focus()
-                    return
+                    alert("주소를 입력해주세요");
+                    $("#order-address").focus();
+                    return;
                 } else if (phone == "") {
-                    alert("휴대폰번호를 입력해주세요")
-                    $("#order-phone").focus()
-                    return
+                    alert("휴대폰번호를 입력해주세요");
+                    $("#order-phone").focus();
+                    return;
                 } else if (!isCellPhone(phone)) {
-                    alert("휴대폰번호 입력 형식이 틀립니다. \n 010-0000-0000으로 입력해주세요")
-                    return
+                    alert("휴대폰번호 입력 형식이 틀립니다. \n 010-0000-0000으로 입력해주세요");
+                    return;
                 }
 
                 // 주문하기 API를 사용해 여기를 채워주세요
+
+            $.ajax({
+                type: "POST",
+                url: "/order",
+                data: {name_give : name, count_give: count, address_give: address, phone_give: phone},
+                success: function(response){
+                if (response["result"] == "success") {
+                    alert(response["msg"]);
+                    window.location.reload();
+                }
+
             }
+            })
+
 
             $(document).ready(function () {
                 $("#orders-box").html("");
@@ -64,11 +77,27 @@
             });
 
             function showOrders() {
-                // 주문 목록보기 API 를 사용해 여기를 채워주세요
+                $.ajax({
+                type: "GET",
+                url: "/order",
+                data: {},
+                success: function (response){
+                    if (response["result"]== "success") {
+                        let orders = response["orders"];
+                        for (let i=0; i < orders.length; i++){
+                            makeCard(orders[i]["name"], orders[i]["count"], orders[i]["address"], orders[i]["phone"]);
+                        }
+                    }else {
+                        alert("주문을 완료하지 못했습니다");
+                    }
+                    }
+
+                    })
+
             }
 
             function makeOrderRow(name, count, address, phone) {
-                let tempHtml = `<tr>\
+                let tempHtml = `<tr>
                                 <td>${name}</td>
                                 <td>${count}</td>
                                 <td>${address}</td>
@@ -76,7 +105,7 @@
                               </tr>`;
 
                 $("#orders-box").append(tempHtml);
-            }
+            }}
         </script>
 
         <style type="text/css">
