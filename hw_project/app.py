@@ -31,7 +31,7 @@ def save_order():
 
     db.homework.insert_one(doc)
 
-    return jsonify({'result': 'success'})
+    return jsonify({'result': 'success', 'msg': '주문이 완료되었습니다!'})
 
 
 # 주문 목록보기(Read) API
